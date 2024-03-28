@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "468825058349",
+    "project_id": "chat-nabil",
+    "storage_bucket": "chat-nabil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468825058349:android:9a8abfa5acda298234dca4",
+        "android_client_info": {
+          "package_name": "com.example.chat_udemy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtk759M8DB5HBg-_Sj2Tl5RAdcWFK5f18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
