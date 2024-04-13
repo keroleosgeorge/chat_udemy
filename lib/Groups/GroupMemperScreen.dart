@@ -22,13 +22,13 @@ class _GroupMemperScreenState extends State<GroupMemperScreen> {
     String myId = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Group Mempers'),
+        title: const Text('Group Mempers'),
         actions: [
           isAdmin ? IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => Edit_group(
               chatGroup: widget.chatGroup,
             ),));
-          }, icon: Icon(Iconsax.user_edit))
+          }, icon: const Icon(Iconsax.user_edit))
               : Container(),
         ],
       ),
@@ -52,8 +52,8 @@ class _GroupMemperScreenState extends State<GroupMemperScreen> {
                         bool admin = widget.chatGroup.admin.contains(userList[index].id);
                         return ListTile(
                           title: Text(userList[index].name!),
-                          subtitle:admin ? Text('Admin',style: TextStyle(color: Colors.greenAccent),)
-                              : Text('member',style: TextStyle(fontSize: 10)),
+                          subtitle:admin ? const Text('Admin',style: TextStyle(color: Colors.greenAccent),)
+                              : const Text('member',style: TextStyle(fontSize: 10)),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -72,7 +72,7 @@ class _GroupMemperScreenState extends State<GroupMemperScreen> {
                                         widget.chatGroup.admin.add(userList[index].id!);
                                       });
                                     });
-                              }, icon: Icon(Iconsax.user_tick)) : Container(),
+                              }, icon: const Icon(Iconsax.user_tick)) : Container(),
                               
                               isAdmin && myId != userList[index].id ? IconButton(onPressed: (){
                                 FireData().removeMember(widget.chatGroup.id, userList[index].id!).then(
@@ -82,7 +82,7 @@ class _GroupMemperScreenState extends State<GroupMemperScreen> {
                                           });
                                         }
                                 );
-                              }, icon: Icon(Iconsax.trash)) : Container(),
+                              }, icon: const Icon(Iconsax.trash)) : Container(),
                             ],
                           ),
                         );

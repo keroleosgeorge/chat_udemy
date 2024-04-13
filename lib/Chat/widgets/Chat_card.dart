@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
-import 'package:intl/intl.dart';
 
 class Chat_Card extends StatelessWidget {
   final ChatRoom item;
@@ -21,54 +20,125 @@ class Chat_Card extends StatelessWidget {
 
 
     String userId = member.isEmpty ? FirebaseAuth.instance.currentUser!.uid : member.first;
-    return StreamBuilder(
+
+    return
+      StreamBuilder(
       stream: FirebaseFirestore.instance.collection('users').doc(userId).snapshots(),
       builder: (context, snapshot) {
-        if(snapshot.hasData) {
-          ChatUser chatUser = ChatUser.fromjson(snapshot.data!.data()!);
+        if (snapshot.hasData && snapshot.data?.data() != null) {
+          var userData = snapshot.data!.data() as Map<String, dynamic>;
+          ChatUser chatUser = ChatUser.fromjson(userData);
           return Card(
             child: ListTile(
-              onTap: () =>
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) =>
-                      Chat_screen(
-                        chatUser: chatUser,
-                        roomId: item.id!,
-                      ),)),
-              leading:chatUser.image == "" ? FullScreenWidget(disposeLevel: DisposeLevel.High,
-              child: CircleAvatar(
-                backgroundImage: AssetImage("assets/chat_image_com.jpg"),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Chat_screen(
+                    chatUser: chatUser,
+                    roomId: item.id ?? '',
+                  ),
+                ),
+              ),
+              leading: chatUser.image!.isEmpty
+                  ? FullScreenWidget(
+                disposeLevel: DisposeLevel.High,
+                child: const CircleAvatar(
+                  backgroundImage: AssetImage("assets/chat_image_com.jpg"),
+                ),
               )
-              )
-                  :
-              FullScreenWidget(disposeLevel: DisposeLevel.High,
-              child: CircleAvatar(backgroundImage: NetworkImage(chatUser.image!), )),
-              title: Text(chatUser.name!),
-              subtitle: Text(item.lastMessage! == "" ? chatUser.about! : item.lastMessage!,maxLines: 1,overflow: TextOverflow.ellipsis),
+                  : FullScreenWidget(
+                disposeLevel: DisposeLevel.High,
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(chatUser.image!),
+                ),
+              ),
+              title: Text(chatUser.name ?? 'Unknown'),
+              subtitle: Text(
+                item.lastMessage!.isEmpty ? chatUser.about ?? 'No details' : item.lastMessage!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               trailing: StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('rooms').
-                  doc(item.id).collection('messages').
-                  snapshots(),
-                  builder: (context, snapshot) {
-                    final unReadList = snapshot.data?.docs.
-                    map((e) => Message.fromjson(e.data())).
-                    where((element) => element.read == "").
-                    where((element) => element.fromId != FirebaseAuth.instance.currentUser!.uid) ?? [];
-                    return unReadList.length != 0 ?
-                    Badge(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
+                stream: FirebaseFirestore.instance
+                    .collection('rooms')
+                    .doc(item.id)
+                    .collection('messages')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final unReadList = snapshot.data?.docs
+                        .map((e) => Message.fromjson(e.data()))
+                        .where((element) => element.read!.isEmpty)
+                        .where((element) => element.fromId != FirebaseAuth.instance.currentUser?.uid) ??
+                        [];
+                    return unReadList.isNotEmpty
+                        ? Badge(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       largeSize: 30,
                       label: Text(unReadList.length.toString()),
-                    ) :Text(myDateTime.dateAndTime(item.lastMessageTime!));
-                  },
+                    )
+                        : Text(myDateTime.dateAndTime(item.lastMessageTime ?? DateTime.now.toString()));
+                  } else {
+                    return const Text('Loading...');
+                  }
+                },
               ),
             ),
           );
+        } else {
+          return const Center(child: CircularProgressIndicator());
         }
-        else{
-          return Container();
-        }
-      }
-    );;
+      },
+    );
+
+    // return StreamBuilder(
+    //   stream: FirebaseFirestore.instance.collection('users').doc(userId).snapshots(),
+    //   builder: (context, snapshot) {
+    //     if(snapshot.hasData) {
+    //       ChatUser chatUser = ChatUser.fromjson(snapshot.data!.data()!);
+    //       return Card(
+    //         child: ListTile(
+    //           onTap: () =>
+    //               Navigator.push(
+    //                   context, MaterialPageRoute(builder: (context) =>
+    //                   Chat_screen(
+    //                     chatUser: chatUser,
+    //                     roomId: item.id!,
+    //                   ),)),
+    //           leading:chatUser.image == "" ? FullScreenWidget(disposeLevel: DisposeLevel.High,
+    //           child: CircleAvatar(
+    //             backgroundImage: AssetImage("assets/chat_image_com.jpg"),
+    //           )
+    //           )
+    //               :
+    //           FullScreenWidget(disposeLevel: DisposeLevel.High,
+    //           child: CircleAvatar(backgroundImage: NetworkImage(chatUser.image!), )),
+    //           title: Text(chatUser.name!),
+    //           subtitle: Text(item.lastMessage! == "" ? chatUser.about! : item.lastMessage!,maxLines: 1,overflow: TextOverflow.ellipsis),
+    //           trailing: StreamBuilder(
+    //               stream: FirebaseFirestore.instance.collection('rooms').
+    //               doc(item.id).collection('messages').
+    //               snapshots(),
+    //               builder: (context, snapshot) {
+    //                 final unReadList = snapshot.data?.docs.
+    //                 map((e) => Message.fromjson(e.data())).
+    //                 where((element) => element.read == "").
+    //                 where((element) => element.fromId != FirebaseAuth.instance.currentUser!.uid) ?? [];
+    //                 return unReadList.length != 0 ?
+    //                 Badge(
+    //                   padding: EdgeInsets.symmetric(horizontal: 12),
+    //                   largeSize: 30,
+    //                   label: Text(unReadList.length.toString()),
+    //                 ) :Text(myDateTime.dateAndTime(item.lastMessageTime!));
+    //               },
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //     else{
+    //       return Container();
+    //     }
+    //   }
+    // );
   }
 }

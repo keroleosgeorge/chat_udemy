@@ -19,8 +19,8 @@ class ChatRoom
   factory ChatRoom.fromjson(Map<String,dynamic> json){
     return ChatRoom(
       id: json['id'] ?? '',
-      lastMessage: json['last_message'],
-      lastMessageTime: json['last_message_time'],
+      lastMessage: json['last_message'] ?? "",
+      lastMessageTime: json['last_message_time'] ?? "",
       members: json['members'] ?? [],
       createdAt: json['created_at'],
     );

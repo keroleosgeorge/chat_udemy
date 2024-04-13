@@ -1,13 +1,11 @@
 import 'package:chat_udemy/Layout.dart';
 import 'package:chat_udemy/firebase/fire_auth.dart';
-import 'package:chat_udemy/screens/auth_scrrens/Name_screen.dart';
 import 'package:chat_udemy/screens/auth_scrrens/forgetpassword_screen.dart';
 import 'package:chat_udemy/utill/colors.dart';
 import 'package:chat_udemy/utill/logoapp.dart';
 import 'package:chat_udemy/utill/custom_text_filed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Login_chat extends StatefulWidget {
@@ -71,7 +69,7 @@ class _Login_chatState extends State<Login_chat> {
                         const Spacer(),
                         TextButton(onPressed:
                             (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Reset_pass(),),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Reset_pass(),),);
                             },
                             child: const Text("Forget password ?"),
                         ),
@@ -83,7 +81,7 @@ class _Login_chatState extends State<Login_chat> {
                     {
                       if(formkey.currentState!.validate()){
                         await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailcon.text, password: passcon.text).then(
-                              (value) => Navigator.push(context, MaterialPageRoute(builder: (context) => LayoutApp(),))).
+                              (value) => Navigator.push(context, MaterialPageRoute(builder: (context) => const LayoutApp(),))).
                         onError(
                               (error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(error.toString(),),
@@ -108,14 +106,16 @@ class _Login_chatState extends State<Login_chat> {
                     OutlinedButton(
                         onPressed: () async {
                           // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:(context) =>Name_screen() ,), (route) => false);
-                     await  FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailcon.text, password: passcon.text).then(
-                             (value) => print('oK'),
+                     await  FirebaseAuth.instance.createUserWithEmailAndPassword(
+                         email: emailcon.text, password: passcon.text
+                     ).then(
+                             (value) => FireAuth.createuser(),
                      ).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString()))),);
                         },
                         style: OutlinedButton.styleFrom(
 
                         ),
-                        child:Center(child: const Text(" Create Account ",),
+                        child:const Center(child: Text(" Create Account ",),
 
                         ),
                     ),

@@ -1,4 +1,3 @@
-import 'package:chat_udemy/Chat/Chat_screen.dart';
 import 'package:chat_udemy/Groups/Group_screen.dart';
 import 'package:chat_udemy/models/group_model.dart';
 import 'package:chat_udemy/utill/date_time.dart';
@@ -26,6 +25,6 @@ class Group_Card extends StatelessWidget {
         subtitle: Text(chatGroup.lastMessage == "" ?"No Messages For Now" : chatGroup.lastMessage ,maxLines: 1,),
         trailing: Text(myDateTime.dateAndTime(chatGroup.lastMessageTime)),
       ),
-    );;
+    );
   }
 }

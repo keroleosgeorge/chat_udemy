@@ -21,14 +21,14 @@ class GroupMessageCard extends StatelessWidget {
         return snapshot.hasData ? Row(
           mainAxisAlignment:isMe ? MainAxisAlignment.end:MainAxisAlignment.start,
           children: [
-            isMe ? IconButton(onPressed: (){}, icon: Icon(Iconsax.message_edit)) :SizedBox(),
+            isMe ? IconButton(onPressed: (){}, icon: const Icon(Iconsax.message_edit)) :const SizedBox(),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(isMe ?10:0),
                   bottomRight: Radius.circular(isMe ?0:10),
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
+                  topLeft: const Radius.circular(10),
+                  topRight: const Radius.circular(10),
                 ),
               ),
               color: isMe ? Colors.grey : kprimary.withOpacity(0.5) ,
@@ -46,14 +46,14 @@ class GroupMessageCard extends StatelessWidget {
                               : Container(),
 
 
-                      SizedBox(height: 4),
-                      Text(message.msg!,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
+                      Text(message.msg!,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 4),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          isMe ? Icon(Iconsax.tick_circle,color: Colors.blueAccent,):SizedBox(),
-                          SizedBox(width: 10),
+                          isMe ? const Icon(Iconsax.tick_circle,color: Colors.blueAccent,):const SizedBox(),
+                          const SizedBox(width: 10),
         Text(
         DateFormat.Hms().format(
         DateTime.fromMillisecondsSinceEpoch(
@@ -61,14 +61,14 @@ class GroupMessageCard extends StatelessWidget {
         )
         ).toString()
         ),//دي علشان الوقت
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Text(
         DateFormat.yMMMEd().format(
         DateTime.fromMillisecondsSinceEpoch(
         int.parse(message.createdAt!)
         )
         ).toString(),
-        style: TextStyle(fontSize: 10),
+        style: const TextStyle(fontSize: 10),
         ),
                         ],
                       ),

@@ -21,12 +21,12 @@ class _GroupHomeScreenState extends State<GroupHomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Create_group(),));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const Create_group(),));
           },
-          child: Icon(Iconsax.message_add1),
+          child: const Icon(Iconsax.message_add1),
       ),
       appBar: AppBar(
-        title: Text("Groups"),
+        title: const Text("Groups"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

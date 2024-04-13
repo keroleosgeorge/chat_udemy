@@ -38,13 +38,14 @@ class _LayoutAppState extends State<LayoutApp> {
 
     super.initState();
   }
+  @override
   Widget build(BuildContext context) {
     ChatUser? me =Provider.of<providerApp>(context).me;
     List<Widget> screens=[
 
     ];
     return Scaffold(
-      body:  me == null ? Center(
+      body:  me == null ? const Center(
         child: CircularProgressIndicator(),
       ):PageView(
         onPageChanged: (value) {
@@ -53,7 +54,7 @@ class _LayoutAppState extends State<LayoutApp> {
           });
         },
         controller: pagecontroller,
-        children: [
+        children: const [
           ChatHomeScreen(),
           GroupHomeScreen(),
           ContactsHomeScreen(),
@@ -68,7 +69,7 @@ class _LayoutAppState extends State<LayoutApp> {
 
         });
       },
-      destinations: [
+      destinations: const [
         NavigationDestination(icon: Icon(Iconsax.message_2), label: "Chat",),
         NavigationDestination(icon: Icon(Iconsax.messages), label: "Groups",),
         NavigationDestination(icon: Icon(Iconsax.user), label: "Contacts",),

@@ -1,14 +1,10 @@
-import 'package:chat_udemy/Chat/widgets/ChatMessageCard.dart';
 import 'package:chat_udemy/Groups/GroupMemperScreen.dart';
 import 'package:chat_udemy/Groups/widgets/GroupMessageCard.dart';
 import 'package:chat_udemy/firebase/fire_database.dart';
 import 'package:chat_udemy/models/group_model.dart';
 import 'package:chat_udemy/models/message_model.dart';
-import 'package:chat_udemy/utill/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Group_screen extends StatefulWidget {
@@ -29,7 +25,7 @@ class _Group_screenState extends State<Group_screen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.chatGroup.name,style: TextStyle(fontSize: 20)),
+            Text(widget.chatGroup.name,style: const TextStyle(fontSize: 20)),
             StreamBuilder(
               stream: FirebaseFirestore.instance.collection('users').
               where('id', whereIn: widget.chatGroup.members).snapshots(),
@@ -56,7 +52,7 @@ class _Group_screenState extends State<Group_screen> {
               ),
             ),
             );
-          }, icon: Icon(Iconsax.user)),
+          }, icon: const Icon(Iconsax.user)),
           // IconButton(onPressed: (){
           //
           //
@@ -95,9 +91,9 @@ class _Group_screenState extends State<Group_screen> {
                                 FireData().sendGMessage("Say Hi For First Time 👋",
                                     widget.chatGroup.id,context,widget.chatGroup);
                               },
-                              child: Card(
+                              child: const Card(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
+                                  padding: EdgeInsets.all(12.0),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -169,19 +165,19 @@ class _Group_screenState extends State<Group_screen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            IconButton.filledTonal(onPressed: (){}, icon: Icon(Iconsax.emoji_happy5)),
-                            SizedBox(width: 5),
-                            IconButton.filledTonal(onPressed: (){}, icon: Icon(Iconsax.camera),),
+                            IconButton.filledTonal(onPressed: (){}, icon: const Icon(Iconsax.emoji_happy5)),
+                            const SizedBox(width: 5),
+                            IconButton.filledTonal(onPressed: (){}, icon: const Icon(Iconsax.camera),),
                           ],
                         ),
                         border: InputBorder.none,
                         hintText: "Message",
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 IconButton.filled(
                     onPressed: (){
                   if(msgcon.text.isNotEmpty)
@@ -194,7 +190,7 @@ class _Group_screenState extends State<Group_screen> {
                             }
                     );
                   }
-                }, icon: Icon(Iconsax.send_1)),
+                }, icon: const Icon(Iconsax.send_1)),
               ],
             ),
 

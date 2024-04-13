@@ -38,7 +38,7 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
   cloud_firestore: ^4.14.0
-  firebase_storage: ^11.6.0
+  firebase_storage: ^11.6.11
   uuid: ^4.2.2
   intl: ^0.19.0
   image_picker: ^1.0.7
@@ -62,6 +62,8 @@ dependencies:
   pdf_viewer_plugin: ^2.0.1
   open_file: ^3.3.2
   video_player: ^2.8.3
+  easy_pdf_viewer: ^1.0.8
+
 
 dev_dependencies:
   flutter_test:

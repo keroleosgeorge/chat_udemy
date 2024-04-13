@@ -3,7 +3,6 @@ import 'package:chat_udemy/utill/logoapp.dart';
 import 'package:chat_udemy/utill/custom_text_filed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Reset_pass extends StatefulWidget {
@@ -57,7 +56,7 @@ class _Reset_passState extends State<Reset_pass> {
                       (value) {
                         Navigator.pop(context);
                         return ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('email sent check your email'),),);
+                          const SnackBar(content: Text('email sent check your email'),),);
                       } ,).onError(
                       (error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(error.toString(),),

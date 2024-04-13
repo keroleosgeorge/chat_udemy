@@ -9,7 +9,7 @@ String? createdAt;
 String? lastActivated;
 String? puchToken;
 bool? online;
-List? myUsers;
+// List? myUsers;
 
 ChatUser({
   required this.id,
@@ -21,21 +21,24 @@ ChatUser({
   required this.lastActivated,
   required this.puchToken,
   required this.online,
-  required this.myUsers,
+   // required this.myUsers,
 });
+
+
+
 
 factory ChatUser.fromjson(Map<String,dynamic> json){
   return ChatUser(
-    id: json['id'] ?? '',
-      name: json['name'],
-      email: json['email'],
-      about: json['about'],
-      image: json['image'],
-      createdAt: json['created_at'],
-      lastActivated: json['last_activated'],
-      puchToken: json['puch_token'],
-      online: json['online'],
-      myUsers: json['my_users'],
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      about: json['about'] ?? '',
+      image: json['image'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      lastActivated: json['last_activated'] ?? '',
+      puchToken: json['puch_token'] ?? '',
+      online: json['online'] ?? false,
+       // myUsers: json['my_users'] ?? [],
   );
 
 }
@@ -51,7 +54,7 @@ Map<String,dynamic> tojson(){
     'last_activated':lastActivated,
     'puch_token':puchToken,
     'online':online,
-    'my_users':myUsers,
+     // 'my_users':myUsers,
   };
 }
 

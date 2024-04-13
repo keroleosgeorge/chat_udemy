@@ -30,10 +30,10 @@ class _Create_groupState extends State<Create_group> {
             members = [];
           });
         });
-      }, label: Text('Done'),icon: Icon(Iconsax.tick_circle),
+      }, label: const Text('Done'),icon: const Icon(Iconsax.tick_circle),
       ) : Container(),
       appBar: AppBar(
-        title: Text('Create group'),
+        title: const Text('Create group'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -46,19 +46,19 @@ class _Create_groupState extends State<Create_group> {
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 40,
                       ),
                       Positioned(
                         bottom: -10,
                         right: -10,
-                        child: IconButton(onPressed: (){}, icon: Icon(Icons.add_a_photo),
+                        child: IconButton(onPressed: (){}, icon: const Icon(Icons.add_a_photo),
                       ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(width: 16,),
+                const SizedBox(width: 16,),
                 Expanded(
                   child: custum_text_field(
                     Hinttext: 'Enter Group Name',
@@ -69,16 +69,16 @@ class _Create_groupState extends State<Create_group> {
                 ),
               ],
             ),
-            SizedBox(height: 15),
-            Divider(),
+            const SizedBox(height: 15),
+            const Divider(),
             Row(
               children: [
-                Text('Mempers'),
-                Spacer(),
+                const Text('Mempers'),
+                const Spacer(),
                 Text(members.length.toString()),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(child: StreamBuilder(
                 stream: FirebaseFirestore.instance.collection('users').
                 doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
@@ -104,7 +104,7 @@ class _Create_groupState extends State<Create_group> {
                               return
                                 CheckboxListTile(
                                           title: Text(items[index].name!),
-                                          checkboxShape: CircleBorder(),
+                                          checkboxShape: const CircleBorder(),
                                           value: members.contains(items[index].id),
                                           onChanged: (value) {
                                             setState(() {

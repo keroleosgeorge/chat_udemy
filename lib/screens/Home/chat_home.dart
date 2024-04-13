@@ -1,5 +1,4 @@
 
-import 'package:chat_udemy/Chat/Chat_screen.dart';
 import 'package:chat_udemy/Chat/widgets/Chat_card.dart';
 import 'package:chat_udemy/firebase/fire_database.dart';
 import 'package:chat_udemy/models/room_model.dart';
@@ -7,6 +6,7 @@ import 'package:chat_udemy/utill/custom_text_filed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ChatHomeScreen extends StatefulWidget {
@@ -31,9 +31,9 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                       children: [
                         Row(
                           children: [
-                            Text("Enter your friend email 😘",style: TextStyle(fontSize: 16)),
-                            Spacer(),
-                            IconButton.filled(onPressed: (){}, icon: Icon(Iconsax.scan_barcode)),
+                            const Text("Enter your friend email 😘",style: TextStyle(fontSize: 16)),
+                            const Spacer(),
+                            IconButton.filled(onPressed: (){}, icon: const Icon(Iconsax.scan_barcode)),
                           ],
                         ),
                         custum_text_field(
@@ -54,16 +54,20 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                       });
 
                             }
+                            else{
+                              Fluttertoast.showToast(msg: "Enter the email");
+                            }
+
 
                           },
-                          child: Center(child: Text('create chat'),),
                           style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                            padding: EdgeInsets.symmetric(vertical:15),
+                            padding: const EdgeInsets.symmetric(vertical:15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                         ),
+                          child: const Center(child: Text('create chat'),),
                         ),
                       ],
                     ),
@@ -77,30 +81,25 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
         title: const Text("Chats"),
       ),
       body:  Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             
             Expanded(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('rooms').
-                where('members',arrayContains: FirebaseAuth.instance.currentUser!.uid).
-                snapshots(),
+              child:
+
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance.collection('rooms')
+                    .where('members', arrayContains: FirebaseAuth.instance.currentUser!.uid)
+                    .snapshots(),
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    List<ChatRoom> items = snapshot.data!.docs.map(
-                            (e) => ChatRoom.fromjson(e.data())).toList()..
-                    sort((a, b) => b.lastMessageTime!.compareTo(a.lastMessageTime!),);
-                    return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return Chat_Card(
-                          item: items[index],
-                        );
-                      },
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
                     );
                   }
-                  else{
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(
                         backgroundColor: Theme.of(context).colorScheme.onBackground,
@@ -108,8 +107,28 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                     );
                   }
 
-                }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text('No data available'),
+                    );
+                  }
+
+                  List<ChatRoom> items = snapshot.data!.docs.map(
+                          (e) => ChatRoom.fromjson(e.data())).toList()
+                    ..sort((a, b) => b.lastMessageTime!.compareTo(a.lastMessageTime!));
+
+                  return ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return Chat_Card(
+                        item: items[index],
+                      );
+                    },
+                  );
+                },
               ),
+
+
             ),
 
           ],
@@ -118,3 +137,36 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
     );
   }
 }
+
+
+
+
+
+// StreamBuilder(
+// stream: FirebaseFirestore.instance.collection('rooms').
+// where('members',arrayContains: FirebaseAuth.instance.currentUser!.uid).
+// snapshots(),
+// builder: (context, snapshot) {
+// if(snapshot.hasData){
+// List<ChatRoom> items = snapshot.data!.docs.map(
+// (e) => ChatRoom.fromjson(e.data())).toList()..
+// sort((a, b) => b.lastMessageTime!.compareTo(a.lastMessageTime!),);
+// return ListView.builder(
+// itemCount: items.length,//snapshot.data!.docs.length
+// itemBuilder: (context, index) {
+// return Chat_Card(
+// item: items[index],
+// );
+// },
+// );
+// }
+// else{
+// return Center(
+// child: CircularProgressIndicator(
+// backgroundColor: Theme.of(context).colorScheme.onBackground,
+// ),
+// );
+// }
+//
+// }
+// )

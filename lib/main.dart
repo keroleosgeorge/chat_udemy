@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>providerApp() ,
+      create: (context) =>providerApp(),
       child: Consumer<providerApp>(
         builder:(context,value,child) =>MaterialApp(
               themeMode:value.themeMode,
-              title: 'Chat Now',
+              title: 'Chat Now copy in D',
               theme: ThemeData(
                 // brightness: Brightness.light,
                  colorScheme: ColorScheme.fromSeed(
@@ -51,15 +51,15 @@ class MyApp extends StatelessWidget {
                     if(snapshot.hasData) {
                       if(FirebaseAuth.instance.currentUser!.displayName == "" ||
                           FirebaseAuth.instance.currentUser!.displayName == null  ){
-                        return Name_screen();
+                        return const Name_screen();
                       }
                       else{
-                        return LayoutApp();
+                        return const LayoutApp();
                       }
 
                     }
                     else{
-                      return Login_chat();
+                      return const Login_chat();
                     }
 
                   },

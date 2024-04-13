@@ -15,7 +15,7 @@ final ChatUser user;
       child: ListTile(
         leading:user.image =="" ? FullScreenWidget(
           disposeLevel: DisposeLevel.High,
-          child: CircleAvatar(
+          child: const CircleAvatar(
             backgroundImage: AssetImage("assets/chat_image_com.jpg"),
           ),
         ) : FullScreenWidget(
@@ -31,7 +31,7 @@ final ChatUser user;
               Navigator.push(context, MaterialPageRoute(
             builder: (context) => Chat_screen(roomId: members.toString(), chatUser: user),)));
 
-        }, icon: Icon(Iconsax.message)),
+        }, icon: const Icon(Iconsax.message)),
       ),
     );
   }

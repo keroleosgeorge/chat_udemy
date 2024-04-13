@@ -3,7 +3,6 @@ import 'package:chat_udemy/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,10 +11,11 @@ class providerApp with ChangeNotifier
 ThemeMode themeMode = ThemeMode.system;
 int mainColor = 0xff9625A9;
 ChatUser? me;
+String? myId = '';
 
-getUserDetails() async
+Future<void> getUserDetails() async
 {
-  String myId = FirebaseAuth.instance.currentUser!.uid;
+  myId = FirebaseAuth.instance.currentUser!.uid;
   await FirebaseFirestore.instance.collection('users').doc(myId).get().
   then((value) => me = ChatUser.fromjson(value.data()!));
 
@@ -28,6 +28,14 @@ getUserDetails() async
   });
   notifyListeners();
 }
+
+Future<void> signout_removed()async
+{
+  myId = '';
+  notifyListeners();
+}
+
+
 
 ChangeMode(bool dark)async
 {

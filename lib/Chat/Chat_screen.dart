@@ -5,13 +5,11 @@ import 'package:chat_udemy/firebase/fire_database.dart';
 import 'package:chat_udemy/firebase/fire_storage.dart';
 import 'package:chat_udemy/models/message_model.dart';
 import 'package:chat_udemy/models/user_model.dart';
-import 'package:chat_udemy/utill/colors.dart';
 import 'package:chat_udemy/utill/date_time.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
@@ -38,7 +36,7 @@ class _Chat_screenState extends State<Chat_screen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.chatUser.name!,style: TextStyle(fontSize: 20)),
+            Text(widget.chatUser.name!,style: const TextStyle(fontSize: 20)),
             StreamBuilder(
               stream: FirebaseFirestore.instance.collection('users').
               doc(widget.chatUser.id).snapshots(),
@@ -49,7 +47,10 @@ class _Chat_screenState extends State<Chat_screen> {
                    fontSize: 15,
                  ),);
                }else{
-                 return Container();
+                 return Text("Last activated ${myDateTime.dateAndTime(widget.chatUser.lastActivated!)} at ${myDateTime.timeDate(widget.chatUser.lastActivated!)}",style: TextStyle(
+                   fontSize: 15,
+                 ),);
+                 //Container();
                }
               }
             ),
@@ -63,7 +64,7 @@ class _Chat_screenState extends State<Chat_screen> {
               selectedMsg.clear();
               copyMsg.clear();
             });
-          }, icon: Icon(Iconsax.trash)) : Container(),
+          }, icon: const Icon(Iconsax.trash)) : Container(),
           copyMsg.isNotEmpty ? IconButton(
               onPressed: (){
                 Clipboard.setData(ClipboardData(text: copyMsg.join(' \n ')));
@@ -71,7 +72,7 @@ class _Chat_screenState extends State<Chat_screen> {
                   copyMsg.clear();
                   selectedMsg.clear();
                 });
-          }, icon: Icon(Iconsax.copy)) : Container(),
+          }, icon: const Icon(Iconsax.copy)) : Container(),
         ],
       ),
       body: Padding(
@@ -150,9 +151,9 @@ class _Chat_screenState extends State<Chat_screen> {
                           // );
                           FireData().sendMessage(widget.chatUser.id!, 'Say Hi For first Meessage 👋', widget.roomId,widget.chatUser,context);
                         },
-                        child: Card(
+                        child: const Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(12.0),
+                            padding: EdgeInsets.all(12.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -194,10 +195,22 @@ class _Chat_screenState extends State<Chat_screen> {
                                 File file = File(result.files.single.path!);
                                 FireStorage().sendfile(file: File(file.path), roomId: widget.roomId,
                                     uid: widget.chatUser.id!, chatUser: widget.chatUser, context: context);
+                              }
+                            }, icon: const Icon(Icons.videocam)),
+                            const SizedBox(width: 5),
+                            IconButton.filledTonal(onPressed: () async{
+                              FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowedExtensions: ['pdf',]);
+
+                              if (result != null) {
+                                File file = File(result.files.single.path!);
+                                FireStorage().sendvideo(file: File(file.path), roomId: widget.roomId,
+                                    uid: widget.chatUser.id!, chatUser: widget.chatUser, context: context);
                                 // PdfView(path: file.path);
                               }
-                            }, icon: Icon(Iconsax.emoji_happy5)),
-                            SizedBox(width: 5),
+                            }, icon: const Icon(Icons.file_open)),
+                            const SizedBox(width: 5),
                             IconButton.filledTonal(
                               onPressed: () async {
                                 ImagePicker picker = ImagePicker();
@@ -209,17 +222,17 @@ class _Chat_screenState extends State<Chat_screen> {
                                       file: File(image.path), roomId: widget.roomId,uid: widget.chatUser.id!,
                                       context: context,chatUser: widget.chatUser);
                                 }
-                            }, icon: Icon(Iconsax.camera),),
+                            }, icon: const Icon(Iconsax.camera),),
                           ],
                         ),
                         border: InputBorder.none,
                         hintText: "Message",
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 IconButton.filled(onPressed: (){
                   if(msgcon.text.isNotEmpty){
                     FireData().sendMessage(widget.chatUser.id!, msgcon.text, widget.roomId,widget.chatUser,context).then(
@@ -228,7 +241,7 @@ class _Chat_screenState extends State<Chat_screen> {
                             }
                     );
                   }
-                }, icon: Icon(Iconsax.send_1)),
+                }, icon: const Icon(Iconsax.send_1)),
               ],
             ),
 

@@ -34,7 +34,7 @@ class _custum_text_fieldState extends State<custum_text_field> {
         obscureText: widget.ispass==true ? obsecure:false,
 
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 25),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 25),
           hintText: widget.Hinttext,
 
           labelText: widget.lable,
@@ -47,11 +47,11 @@ class _custum_text_fieldState extends State<custum_text_field> {
               obsecure= !obsecure;
             });
           },
-              icon: Icon(Iconsax.eye3))
-              : SizedBox(),
+              icon: const Icon(Iconsax.eye3))
+              : const SizedBox(),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(color: Color(0xff11F4E1)),
+            borderSide: const BorderSide(color: Color(0xff11F4E1)),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),

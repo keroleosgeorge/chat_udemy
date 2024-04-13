@@ -1,13 +1,10 @@
 import 'package:chat_udemy/firebase/fire_database.dart';
 import 'package:chat_udemy/models/user_model.dart';
-import 'package:chat_udemy/provider/darkcubit.dart';
 import 'package:chat_udemy/provider/provider.dart';
 import 'package:chat_udemy/settings/Qrcodescreen.dart';
 import 'package:chat_udemy/settings/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,7 +34,7 @@ class _SettingHomeScreenState extends State<SettingHomeScreen> {
       }
       ),
       appBar: AppBar(
-        title: Text("Settings"),
+        title: const Text("Settings"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -46,29 +43,29 @@ class _SettingHomeScreenState extends State<SettingHomeScreen> {
               children: [
                 ListTile(
                   minVerticalPadding: 40,
-                  leading: CircleAvatar(radius: 30),
+                  leading: const CircleAvatar(radius: 30),
                   title: Text(prov.me!.name.toString()),
                   trailing: IconButton(
                       onPressed: (){
                         Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => QrcodeScreen(),),
+                          context, MaterialPageRoute(builder: (context) => const QrcodeScreen(),),
                         );
                       },
-                      icon: Icon(Iconsax.scan_barcode),
+                      icon: const Icon(Iconsax.scan_barcode),
                   ),
                 ),
             Card(
               child: ListTile(
-                title: Text('Profile'),
-                leading: Icon(Iconsax.user),
-                trailing: Icon(Iconsax.arrow_right),
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(),)),
+                title: const Text('Profile'),
+                leading: const Icon(Iconsax.user),
+                trailing: const Icon(Iconsax.arrow_right),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen(),)),
               ),
             ),
                 Card(
                   child: ListTile(
-                    title: Text('Theme'),
-                    leading: Icon(Iconsax.color_swatch),
+                    title: const Text('Theme'),
+                    leading: const Icon(Iconsax.color_swatch),
                     onTap: () {
                       showDialog(
                         context: context,
@@ -87,7 +84,7 @@ class _SettingHomeScreenState extends State<SettingHomeScreen> {
                                   onPressed: (){
                               Navigator.pop(context);
                             },
-                                child: Text('Done'),
+                                child: const Text('Done'),
                             ),
                             ],
                           );
@@ -98,7 +95,7 @@ class _SettingHomeScreenState extends State<SettingHomeScreen> {
                 ),
                 Card(
                   child: ListTile(
-                    title: Text('Dark Mood'),
+                    title: const Text('Dark Mood'),
                     // leading: Icon(Icons.dark_mode),
                     trailing:
                     // IconButton(onPressed: (){
@@ -117,9 +114,11 @@ class _SettingHomeScreenState extends State<SettingHomeScreen> {
                 ),
                 Card(
                   child: ListTile(
-                    onTap: ()async => await FirebaseAuth.instance.signOut(),
-                    title: Text('Sign out'),
-                    trailing: Icon(Iconsax.logout_1),
+                    onTap: ()async => await FirebaseAuth.instance.signOut().then((value) {
+                      providerApp().signout_removed();
+                    }),
+                    title: const Text('Sign out'),
+                    trailing: const Icon(Iconsax.logout_1),
                   ),
                 ),
           ],

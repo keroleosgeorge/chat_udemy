@@ -55,11 +55,11 @@ class FireStorage
   {
     String ext = file.path.split('.').last;
     final ref = firestorage.ref().
-    child('files/$roomId/${DateTime.now().millisecondsSinceEpoch}.$ext');
+    child('pdfs/$roomId/${DateTime.now().millisecondsSinceEpoch}.$ext');
 
     await ref.putFile(file);//to upload file on firestorage
     String fileUrl = await ref.getDownloadURL();
-    FireData().sendMessage(uid, fileUrl, roomId,type: 'file',chatUser,context);
+    FireData().sendMessage(uid, fileUrl, roomId,type: 'video',chatUser,context);
   }
 
 }

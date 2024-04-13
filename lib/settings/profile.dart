@@ -4,7 +4,6 @@ import 'package:chat_udemy/firebase/fire_database.dart';
 import 'package:chat_udemy/firebase/fire_storage.dart';
 import 'package:chat_udemy/models/user_model.dart';
 import 'package:chat_udemy/provider/provider.dart';
-import 'package:chat_udemy/utill/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:iconsax/iconsax.dart';
@@ -20,7 +19,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController namecon = TextEditingController();
-  TextEditingController aboutcon = TextEditingController();
+  static TextEditingController aboutcon = TextEditingController();
   ChatUser? me;
   String _img = "";
   bool nameEdit =false;
@@ -37,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -50,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     _img == "" ?
                     me!.image == "" ? FullScreenWidget(disposeLevel: DisposeLevel.High,
-                    child: CircleAvatar(radius: 70,)) :
+                    child: const CircleAvatar(radius: 70,)) :
                     FullScreenWidget(disposeLevel: DisposeLevel.High,
                     child: CircleAvatar(radius: 70,backgroundImage:NetworkImage(me!.image!) ,))
                         :
@@ -72,25 +71,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           FireStorage().updateProfileImage(file: File(image.path));
                         }
 
-                      }, icon: Icon(Iconsax.edit),
+                      }, icon: const Icon(Iconsax.edit),
                     ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Card(
                 child:ListTile(
                   trailing: IconButton(onPressed: (){
                     setState(() {
                       nameEdit = true;
                     });
-                  }, icon: Icon(Iconsax.edit),),
-                  leading: Icon(Iconsax.user_octagon),
+                  }, icon: const Icon(Iconsax.edit),),
+                  leading: const Icon(Iconsax.user_octagon),
                   title: TextField(
                     controller: namecon,
                     enabled: nameEdit,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Name',
                     ),
@@ -104,12 +103,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     setState(() {
                       aboutEdit = true;
                     });
-                  }, icon: Icon(Iconsax.edit),),
-                  leading: Icon(Iconsax.information),
+                  }, icon: const Icon(Iconsax.edit),),
+                  leading: const Icon(Iconsax.information),
                   title: TextField(
                     controller: aboutcon,
                     enabled: aboutEdit,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'About',
                     ),
@@ -119,21 +118,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               Card(
                 child:ListTile(
-                  leading: Icon(Iconsax.direct),
-                  title: Text('Email'),
+                  leading: const Icon(Iconsax.direct),
+                  title: const Text('Email'),
                   subtitle: Text(me!.email.toString()),
                 ),
               ),
 
               Card(
                 child:ListTile(
-                  leading: Icon(Iconsax.direct),
-                  title: Text('Joind on'),
+                  leading: const Icon(Iconsax.direct),
+                  title: const Text('Joind on'),
                   subtitle: Text(me!.createdAt.toString()),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               ElevatedButton(
                 onPressed: ()
@@ -156,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

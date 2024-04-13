@@ -47,13 +47,13 @@ class _ContactsHomeScreenState extends State<ContactsHomeScreen> {
             });
           },
 
-          icon: Icon(Iconsax.close_circle),) :
+          icon: const Icon(Iconsax.close_circle),) :
            IconButton(onPressed: (){
              setState(() {
                searched=true;
              });
            },
-             icon: Icon(Iconsax.search_normal),)
+             icon: const Icon(Iconsax.search_normal),)
       ],
         title: searched ?Row(children: [
           Expanded(
@@ -65,13 +65,13 @@ class _ContactsHomeScreenState extends State<ContactsHomeScreen> {
                   });
                 },
                 controller: searchcontroller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Search by name'
                 ),
               ),
           ),
-        ],) :Text("My Contacts"),
+        ],) :const Text("My Contacts"),
 
       ),
       floatingActionButton: FloatingActionButton(
@@ -84,9 +84,9 @@ class _ContactsHomeScreenState extends State<ContactsHomeScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Enter your friend email 😘",style: TextStyle(fontSize: 16)),
-                        Spacer(),
-                        IconButton.filled(onPressed: (){}, icon: Icon(Iconsax.scan_barcode)),
+                        const Text("Enter your friend email 😘",style: TextStyle(fontSize: 16)),
+                        const Spacer(),
+                        IconButton.filled(onPressed: (){}, icon: const Icon(Iconsax.scan_barcode)),
                       ],
                     ),
                     custum_text_field(
@@ -105,14 +105,14 @@ class _ContactsHomeScreenState extends State<ContactsHomeScreen> {
                           Navigator.pop(context);
                         });
                       },
-                      child: Center(child: Text('Add Contact'),),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                        padding: EdgeInsets.symmetric(vertical:15),
+                        padding: const EdgeInsets.symmetric(vertical:15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      child: const Center(child: Text('Add Contact'),),
                     ),
                   ],
                 ),
@@ -127,50 +127,53 @@ class _ContactsHomeScreenState extends State<ContactsHomeScreen> {
         child: Column(
           children: [
             Expanded(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('users').
-                doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+              child:
 
+
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance.collection('users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .snapshots(),
                 builder: (context, snapshot) {
-                  if(snapshot.hasData)
-                  {
-                  myContacts = snapshot.data!.data()!['my_users'];
+                  if (snapshot.hasData) {
+                    myContacts = snapshot.data!.data()?['my_users'] ?? []; // Ensure myContacts is never null
 
-                  return StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('users').
-                  where('id',whereIn: myContacts.isEmpty ? [''] : myContacts).snapshots(),
-                  //عايزين هنا بدل ما نحط ['']المفروض تتغير علشان بتطلع null
-                  builder: (context, snapshot) {
-                    if(snapshot.hasData)
-                    {
-                      final List<ChatUser> items = snapshot.data!.docs.map(
-                    (e) => ChatUser.fromjson(e.data())
-                    ).where((element) => element.name!.toLowerCase().
-                      contains(searchcontroller.text.toLowerCase()))
-                          .toList()..sort((a, b) => a.name!.compareTo(b.name!),);
-                      return ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                    return Contact_Card(
-                      user: items[index],
+                    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: myContacts.isEmpty
+                          ? Stream<QuerySnapshot<Map<String, dynamic>>>.empty()
+                          : FirebaseFirestore.instance.collection('users')
+                          .where('id', whereIn: myContacts)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final List<ChatUser> items = snapshot.data!.docs
+                              .map((e) => ChatUser.fromjson(e.data()))
+                              .where((element) =>
+                              element.name!.toLowerCase().contains(searchcontroller.text.toLowerCase())
+                          )
+                              .toList()
+                            ..sort((a, b) => a.name!.compareTo(b.name!));
+
+                          return ListView.builder(
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              return Contact_Card(
+                                user: items[index],
+                              );
+                            },
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
                     );
-                    },
-                    );
-                    }
-                    else{
-                      return Container();
+                  } else {
+                    return Container();
                   }
-                  },
-                  );
-                  }
-    else{
-    return Container();
-    }
-
-                  }
-
-
+                },
               ),
+
+
             ),
           ],
         ),
@@ -178,3 +181,53 @@ class _ContactsHomeScreenState extends State<ContactsHomeScreen> {
     );
   }
 }
+
+
+
+
+
+
+// StreamBuilder(
+// stream: FirebaseFirestore.instance.collection('users').
+// doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+//
+// builder: (context, snapshot) {
+// if(snapshot.hasData)
+// {
+// myContacts = snapshot.data!.data()!['my_users'];
+//
+// return StreamBuilder(
+// stream: FirebaseFirestore.instance.collection('users').
+// where('id',whereIn: myContacts.isEmpty ? [''] : myContacts).snapshots(),
+// //عايزين هنا بدل ما نحط ['']المفروض تتغير علشان بتطلع null
+// builder: (context, snapshot) {
+// if(snapshot.hasData)
+// {
+// final List<ChatUser> items = snapshot.data!.docs.map(
+// (e) => ChatUser.fromjson(e.data())
+// ).where((element) => element.name!.toLowerCase().
+// contains(searchcontroller.text.toLowerCase()))
+//     .toList()..sort((a, b) => a.name!.compareTo(b.name!),);
+// return ListView.builder(
+// itemCount: items.length,
+// itemBuilder: (context, index) {
+// return Contact_Card(
+// user: items[index],
+// );
+// },
+// );
+// }
+// else{
+// return Container();
+// }
+// },
+// );
+// }
+// else{
+// return Container();
+// }
+//
+// }
+//
+//
+// ),
